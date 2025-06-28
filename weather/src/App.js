@@ -1,15 +1,15 @@
 import React from 'react';
-import { Stack, Select, MenuItem, Button } from "@mui/material";
+import { Stack } from "@mui/material";
 import WeatherCards from "./WeatherCards/WeatherCards";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [city, setCity] = useState("Pune");
-  const [data, setData] = useState(null);
+  const [city, setCity] = useState("");
+  const [data, setData] = useState([]);
   const[error,setError] = useState(false);
   const fetchWeather = (selectedCity) => {
-    const key = '3664bdc0237a4118a1e54805252806';
-    fetch(`https://api.weatherapi.com/v1/current.json?key=${key}&q=${selectedCity}`)
+    const key = '9390d7874f1749999e185547252806';
+  fetch(`https://api.weatherapi.com/v1/current.json?key=5376e3fb125c4878b0691346252806&q=${encodeURIComponent(selectedCity.trim())}`)
       .then(res => res.json())
       .then(data => {
         console.log('Fetched weather:', data);
