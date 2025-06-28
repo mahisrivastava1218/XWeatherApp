@@ -7,32 +7,29 @@ function App() {
   const [city, setCity] = useState("");
   const [data, setData] = useState([]);
   const[error,setError] = useState(false);
-  const fetchWeather = (selectedCity) => {
-    const key = '9390d7874f1749999e185547252806';
-  fetch(`https://api.weatherapi.com/v1/current.json?key=5376e3fb125c4878b0691346252806&q=${encodeURIComponent(selectedCity.trim())}`)
+  const fetchWeather = (city) => {
+    const key = 'bf92d1d2e2974ed49ae103858252806';
+  fetch(`https://api.weatherapi.com/v1/current.json?key=bf92d1d2e2974ed49ae103858252806&q=${city}`)
       .then(res => res.json())
       .then(data => {
-        console.log('Fetched weather:', data);
         setData(data);
+          // ✅ Check for error inside async then block
+      if (data && data.location && data.current) {
+        setError(false);
+      } else {
+        setError(true);
+      }
       })
       .catch(err => console.error("Fetch failed:", err));
   };
  const handleClick = ()=>{
-  if(data.length>0){
-     setError(false);
-  }else{
-    setError(true);
-  }
+  fetchWeather(city);
  }
-  useEffect(() => {
-    fetchWeather(city); // fetch on mount
-  }, []);
   console.log(data);
+  // console.log(data.current.temp_c,data.humidity,data.current.condition.text,data.wind_kph)
   return (
     <Stack spacing={2} sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: 4 }}>
-      {error && (
-        alert("Failed to fetch weather data")
-      )}
+    
       <input
         value={city}
         type='text'
@@ -45,10 +42,14 @@ function App() {
         Search
       </button>
       
-      {!error ? (
-        <WeatherCards data={data} />
+      {data && data.current ? (
+        <WeatherCards data={{Temperature:data.current.temp_c,Humidity:data.current.humidity,Condition:data.current.condition.text,WindSpeed:data.current.wind_kph}}/>
         ):(
           <p>Loading data...</p>
+          
+      )}
+        {error && (
+        alert("Failed to fetch weather data")
       )}
     </Stack>
   );
