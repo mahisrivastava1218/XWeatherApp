@@ -35,6 +35,7 @@ function App() {
       )}
       <input
         value={city}
+        type='text'
         onChange={(e) => setCity(e.target.value)}
         style={{padding:"10px"}}
         placeholder="Enter city name"
